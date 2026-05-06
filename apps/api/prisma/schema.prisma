@@ -1,0 +1,120 @@
+// This is your Prisma schema file.
+// Learn more: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum Role {
+  ADMIN
+  CLIENT
+}
+
+enum ProjectStatus {
+  DISCOVERY
+  IN_PROGRESS
+  REVIEW
+  COMPLETED
+  ON_HOLD
+}
+
+enum InvoiceStatus {
+  DRAFT
+  SENT
+  PAID
+  OVERDUE
+  CANCELLED
+}
+
+enum InquiryStatus {
+  NEW
+  IN_REVIEW
+  RESPONDED
+  CLOSED
+}
+
+model User {
+  id              String    @id @default(cuid())
+  email           String    @unique
+  name            String
+  hashedPassword  String
+  role            Role      @default(CLIENT)
+  stripeCustomerId String?  @unique
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  projects        Project[]
+  invoices        Invoice[]
+  refreshTokens   RefreshToken[]
+
+  @@map("users")
+}
+
+model RefreshToken {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  userId    String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("refresh_tokens")
+}
+
+model Project {
+  id          String        @id @default(cuid())
+  title       String
+  description String?
+  status      ProjectStatus @default(DISCOVERY)
+  startDate   DateTime?
+  endDate     DateTime?
+  clientId    String
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  client   User      @relation(fields: [clientId], references: [id])
+  invoices Invoice[]
+
+  @@map("projects")
+}
+
+model Invoice {
+  id              String        @id @default(cuid())
+  amount          Int           // in cents
+  currency        String        @default("usd")
+  status          InvoiceStatus @default(DRAFT)
+  description     String?
+  dueDate         DateTime?
+  stripePaymentId String?       @unique
+  clientId        String
+  projectId       String?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  client  User     @relation(fields: [clientId], references: [id])
+  project Project? @relation(fields: [projectId], references: [id])
+
+  @@map("invoices")
+}
+
+model Inquiry {
+  id        String        @id @default(cuid())
+  name      String
+  email     String
+  company   String?
+  phone     String?
+  service   String?
+  message   String
+  status    InquiryStatus @default(NEW)
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+
+  @@map("inquiries")
+}
