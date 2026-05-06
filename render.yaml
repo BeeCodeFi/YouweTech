@@ -1,0 +1,42 @@
+# Render deployment config for YouweTech API
+# Reference: https://render.com/docs/infrastructure-as-code
+
+services:
+  - type: web
+    name: youwetech-api
+    runtime: node
+    plan: free
+    region: oregon
+    buildCommand: cd apps/api && npm install && npx prisma generate && npm run build
+    startCommand: cd apps/api && npm run start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: '10000'
+      - key: DATABASE_URL
+        sync: false
+      - key: DIRECT_URL
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_REFRESH_SECRET
+        generateValue: true
+      - key: ALLOWED_ORIGINS
+        sync: false
+      - key: FRONTEND_URL
+        sync: false
+      - key: STRIPE_SECRET_KEY
+        sync: false
+      - key: STRIPE_WEBHOOK_SECRET
+        sync: false
+      - key: RESEND_API_KEY
+        sync: false
+      - key: FROM_EMAIL
+        value: 'YouweTech <noreply@youwetech.com>'
+      - key: ADMIN_EMAIL
+        sync: false
+    healthCheckPath: /health
+    autoDeploy: true
+    branch: develop
+    rootDir: .
