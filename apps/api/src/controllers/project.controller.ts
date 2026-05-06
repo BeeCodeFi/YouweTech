@@ -36,7 +36,7 @@ export async function listProjects(req: AuthRequest, res: Response, next: NextFu
 export async function getProject(req: AuthRequest, res: Response, next: NextFunction) {
   try {
     const project = await prisma.project.findUnique({
-      where: { id: req.params.id },
+      where: { id: req.params.id as string },
       include: {
         client: { select: { id: true, name: true, email: true } },
         invoices: true,
@@ -80,7 +80,7 @@ export async function updateProject(req: AuthRequest, res: Response, next: NextF
   try {
     const data = updateSchema.parse(req.body);
     const project = await prisma.project.update({
-      where: { id: req.params.id },
+      where: { id: req.params.id as string },
       data: {
         ...data,
         startDate: data.startDate ? new Date(data.startDate) : undefined,

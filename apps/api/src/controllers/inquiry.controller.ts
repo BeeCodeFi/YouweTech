@@ -37,7 +37,7 @@ export async function listInquiries(req: AuthRequest, res: Response, next: NextF
 
 export async function getInquiry(req: AuthRequest, res: Response, next: NextFunction) {
   try {
-    const inquiry = await prisma.inquiry.findUnique({ where: { id: req.params.id } });
+    const inquiry = await prisma.inquiry.findUnique({ where: { id: req.params.id as string } });
     if (!inquiry) {
       res.status(404).json({ error: 'Inquiry not found' });
       return;
@@ -53,7 +53,7 @@ export async function updateInquiryStatus(req: AuthRequest, res: Response, next:
     const schema = z.object({ status: z.enum(['NEW', 'IN_REVIEW', 'RESPONDED', 'CLOSED']) });
     const { status } = schema.parse(req.body);
     const inquiry = await prisma.inquiry.update({
-      where: { id: req.params.id },
+      where: { id: req.params.id as string },
       data: { status },
     });
     res.json({ inquiry });

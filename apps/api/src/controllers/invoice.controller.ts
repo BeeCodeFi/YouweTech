@@ -29,7 +29,7 @@ export async function listInvoices(req: AuthRequest, res: Response, next: NextFu
 export async function getInvoice(req: AuthRequest, res: Response, next: NextFunction) {
   try {
     const invoice = await prisma.invoice.findUnique({
-      where: { id: req.params.id },
+      where: { id: req.params.id as string },
       include: {
         client: { select: { id: true, name: true, email: true } },
         project: { select: { id: true, title: true } },
@@ -69,7 +69,7 @@ export async function createInvoice(req: AuthRequest, res: Response, next: NextF
 
 export async function createCheckoutSession(req: AuthRequest, res: Response, next: NextFunction) {
   try {
-    const invoice = await prisma.invoice.findUnique({ where: { id: req.params.id } });
+    const invoice = await prisma.invoice.findUnique({ where: { id: req.params.id as string } });
     if (!invoice) {
       res.status(404).json({ error: 'Invoice not found' });
       return;
