@@ -29,11 +29,15 @@ function PortalShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
+  const isAuthPage = pathname === '/portal/login' || pathname === '/portal/register';
+
   useEffect(() => {
-    if (!loading && !user) {
+    if (!loading && !user && !isAuthPage) {
       router.push('/portal/login');
     }
-  }, [loading, user, router]);
+  }, [loading, user, router, isAuthPage]);
+
+  if (isAuthPage) return <>{children}</>;
 
   if (loading) {
     return (
