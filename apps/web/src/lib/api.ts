@@ -1,4 +1,9 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'https://youwetech.onrender.com';
+// Use relative paths so Next.js rewrites proxy requests through Vercel → no CORS.
+// next.config.ts rewrite: /api/* → https://youwetech.onrender.com/api/*
+const API_URL =
+  typeof window === 'undefined'
+    ? (process.env.NEXT_PUBLIC_API_URL ?? 'https://youwetech.onrender.com')
+    : ''; // browser uses relative path → Vercel rewrite handles routing
 
 interface FetchOptions extends RequestInit {
   token?: string;

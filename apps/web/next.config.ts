@@ -1,9 +1,9 @@
 import type { NextConfig } from 'next';
 
+// Destination for the API proxy rewrite. Defaults to the Render service.
 const API_ORIGIN = process.env.NEXT_PUBLIC_API_URL ?? 'https://youwetech.onrender.com';
 
 const nextConfig: NextConfig = {
-  output: 'standalone',
   async rewrites() {
     return [
       {
