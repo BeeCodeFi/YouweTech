@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { HeroEntrance, StaggerList, StaggerItem } from '@/components/ui/motion';
 
 export const metadata: Metadata = {
   title: 'Portfolio',
@@ -63,39 +64,52 @@ export default function PortfolioPage() {
     <>
       <section className="from-primary/5 to-background bg-gradient-to-b py-16">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="text-4xl font-bold">Our Work</h1>
-          <p className="text-muted-foreground mx-auto mt-4 max-w-2xl">
-            A selection of projects we&apos;re proud of. Each one built with care, delivered on
-            time, and designed to scale.
-          </p>
+          <HeroEntrance delay={0}>
+            <h1 className="text-4xl font-bold">Our Work</h1>
+          </HeroEntrance>
+          <HeroEntrance delay={0.1}>
+            <p className="text-muted-foreground mx-auto mt-4 max-w-2xl">
+              A selection of projects we&apos;re proud of. Each one built with care, delivered on
+              time, and designed to scale.
+            </p>
+          </HeroEntrance>
         </div>
       </section>
 
       <section className="py-20">
         <div className="container mx-auto px-4">
-          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+          <StaggerList className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
             {projects.map((project) => (
-              <Card key={project.title} className="flex flex-col">
-                <CardHeader>
-                  <Badge variant="secondary" className="w-fit">
-                    {project.category}
-                  </Badge>
-                  <CardTitle className="mt-2 text-lg">{project.title}</CardTitle>
-                  <p className="text-muted-foreground text-sm">Client: {project.client}</p>
-                </CardHeader>
-                <CardContent className="flex flex-1 flex-col">
-                  <p className="text-muted-foreground flex-1 text-sm">{project.description}</p>
-                  <div className="mt-4 flex flex-wrap gap-2">
-                    {project.tech.map((t) => (
-                      <Badge key={t} variant="outline" className="text-xs">
-                        {t}
-                      </Badge>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
+              <StaggerItem key={project.title}>
+                <Card className="group hover:shadow-primary/10 hover:border-primary/30 flex h-full flex-col transition-all duration-200 hover:-translate-y-1 hover:shadow-lg">
+                  <CardHeader>
+                    <Badge
+                      variant="secondary"
+                      className="bg-primary/10 text-primary border-primary/20 w-fit"
+                    >
+                      {project.category}
+                    </Badge>
+                    <CardTitle className="mt-2 text-lg">{project.title}</CardTitle>
+                    <p className="text-muted-foreground text-sm">Client: {project.client}</p>
+                  </CardHeader>
+                  <CardContent className="flex flex-1 flex-col">
+                    <p className="text-muted-foreground flex-1 text-sm">{project.description}</p>
+                    <div className="mt-4 flex flex-wrap gap-1.5">
+                      {project.tech.map((t) => (
+                        <Badge
+                          key={t}
+                          variant="outline"
+                          className="hover:bg-primary/10 hover:border-primary/30 text-xs transition-colors"
+                        >
+                          {t}
+                        </Badge>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              </StaggerItem>
             ))}
-          </div>
+          </StaggerList>
         </div>
       </section>
     </>

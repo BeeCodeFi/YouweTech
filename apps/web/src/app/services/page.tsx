@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Globe, Smartphone, Cloud, Palette, Lightbulb, Wrench, ArrowRight } from 'lucide-react';
+import { FadeUp, StaggerList, StaggerItem, HeroEntrance } from '@/components/ui/motion';
 
 export const metadata: Metadata = {
   title: 'Services',
@@ -95,23 +96,29 @@ export default function ServicesPage() {
     <>
       <section className="from-primary/5 to-background bg-gradient-to-b py-16">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="text-4xl font-bold">Our Services</h1>
-          <p className="text-muted-foreground mx-auto mt-4 max-w-2xl">
-            We offer a comprehensive suite of IT services to help businesses of all sizes build,
-            scale, and maintain their digital presence.
-          </p>
+          <HeroEntrance delay={0}>
+            <h1 className="text-4xl font-bold">Our Services</h1>
+          </HeroEntrance>
+          <HeroEntrance delay={0.1}>
+            <p className="text-muted-foreground mx-auto mt-4 max-w-2xl">
+              We offer a comprehensive suite of IT services to help businesses of all sizes build,
+              scale, and maintain their digital presence.
+            </p>
+          </HeroEntrance>
         </div>
       </section>
 
       <section className="py-20">
         <div className="container mx-auto px-4">
-          <div className="space-y-16">
+          <StaggerList className="space-y-12">
             {services.map((service) => (
-              <div key={service.id} id={service.id} className="scroll-mt-20">
-                <Card className="overflow-hidden">
+              <StaggerItem key={service.id} id={service.id} className="scroll-mt-20">
+                <Card className="hover:shadow-primary/10 hover:border-primary/30 overflow-hidden transition-all duration-200 hover:shadow-md">
                   <div className="grid md:grid-cols-3">
-                    <CardHeader className="bg-muted/30 md:col-span-1">
-                      <service.icon className="text-primary mb-4 h-12 w-12" />
+                    <CardHeader className="from-primary/10 to-primary/5 bg-gradient-to-br md:col-span-1">
+                      <div className="bg-primary/15 mb-3 flex h-14 w-14 items-center justify-center rounded-xl">
+                        <service.icon className="text-primary h-7 w-7" />
+                      </div>
                       <CardTitle className="text-xl">{service.title}</CardTitle>
                     </CardHeader>
                     <CardContent className="p-6 md:col-span-2">
@@ -119,7 +126,7 @@ export default function ServicesPage() {
                       <ul className="mt-4 grid gap-2 sm:grid-cols-2">
                         {service.features.map((feature) => (
                           <li key={feature} className="flex items-center gap-2 text-sm">
-                            <span className="bg-primary h-1.5 w-1.5 rounded-full" />
+                            <span className="bg-primary h-1.5 w-1.5 shrink-0 rounded-full" />
                             {feature}
                           </li>
                         ))}
@@ -127,11 +134,11 @@ export default function ServicesPage() {
                     </CardContent>
                   </div>
                 </Card>
-              </div>
+              </StaggerItem>
             ))}
-          </div>
+          </StaggerList>
 
-          <div className="mt-16 text-center">
+          <FadeUp delay={0.2} className="mt-16 text-center">
             <p className="text-muted-foreground">
               Not sure which service you need? Let&apos;s talk.
             </p>
@@ -140,7 +147,7 @@ export default function ServicesPage() {
                 Get a Free Consultation <ArrowRight className="h-4 w-4" />
               </Button>
             </Link>
-          </div>
+          </FadeUp>
         </div>
       </section>
     </>

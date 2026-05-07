@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { Separator } from '@/components/ui/separator';
+import { Github, Linkedin, Twitter } from 'lucide-react';
 
 const footerLinks = {
   Services: [
@@ -20,6 +21,24 @@ const footerLinks = {
   ],
 };
 
+const socialLinks = [
+  {
+    href: 'https://github.com/BeeCodeFi/YouweTech',
+    label: 'GitHub',
+    icon: Github,
+  },
+  {
+    href: 'https://linkedin.com/company/youwetech',
+    label: 'LinkedIn',
+    icon: Linkedin,
+  },
+  {
+    href: 'https://twitter.com/youwetech',
+    label: 'Twitter / X',
+    icon: Twitter,
+  },
+];
+
 export function Footer() {
   return (
     <footer className="bg-muted/30 border-t">
@@ -27,13 +46,27 @@ export function Footer() {
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {/* Brand */}
           <div className="space-y-4">
-            <Link href="/" className="text-primary text-2xl font-bold">
+            <Link href="/" className="text-primary text-2xl font-bold tracking-tight">
               YouweTech
             </Link>
-            <p className="text-muted-foreground text-sm">
+            <p className="text-muted-foreground text-sm leading-relaxed">
               Empowering businesses with modern IT solutions. From concept to deployment, we build
               technology that scales.
             </p>
+            <div className="flex items-center gap-3 pt-1">
+              {socialLinks.map(({ href, label, icon: Icon }) => (
+                <a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={label}
+                  className="text-muted-foreground hover:text-primary transition-colors"
+                >
+                  <Icon className="h-4 w-4" />
+                </a>
+              ))}
+            </div>
           </div>
 
           {/* Link columns */}
@@ -62,16 +95,7 @@ export function Footer() {
           <p className="text-muted-foreground text-sm">
             &copy; {new Date().getFullYear()} YouweTech. All rights reserved.
           </p>
-          <div className="flex space-x-4">
-            <a
-              href="https://github.com/BeeCodeFi/YouweTech"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-muted-foreground hover:text-foreground text-sm"
-            >
-              GitHub
-            </a>
-          </div>
+          <p className="text-muted-foreground text-xs">Built with Next.js &amp; Tailwind CSS</p>
         </div>
       </div>
     </footer>

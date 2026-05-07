@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
 import { Check, ArrowRight } from 'lucide-react';
+import { HeroEntrance, FadeUp, StaggerList, StaggerItem } from '@/components/ui/motion';
 
 export const metadata: Metadata = {
   title: 'Pricing',
@@ -70,56 +71,68 @@ export default function PricingPage() {
     <>
       <section className="from-primary/5 to-background bg-gradient-to-b py-16">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="text-4xl font-bold">Simple, Transparent Pricing</h1>
-          <p className="text-muted-foreground mx-auto mt-4 max-w-2xl">
-            Every project is unique. We provide custom quotes based on your specific requirements —
-            no hidden fees, no surprises.
-          </p>
+          <HeroEntrance delay={0}>
+            <h1 className="text-4xl font-bold">Simple, Transparent Pricing</h1>
+          </HeroEntrance>
+          <HeroEntrance delay={0.1}>
+            <p className="text-muted-foreground mx-auto mt-4 max-w-2xl">
+              Every project is unique. We provide custom quotes based on your specific requirements
+              — no hidden fees, no surprises.
+            </p>
+          </HeroEntrance>
         </div>
       </section>
 
       <section className="py-20">
         <div className="container mx-auto px-4">
-          <div className="grid gap-8 lg:grid-cols-3">
+          <StaggerList className="grid gap-8 lg:grid-cols-3">
             {plans.map((plan) => (
-              <Card
-                key={plan.name}
-                className={`relative flex flex-col ${
-                  plan.highlighted ? 'border-primary shadow-lg' : ''
-                }`}
-              >
-                {plan.highlighted && (
-                  <Badge className="absolute -top-3 left-1/2 -translate-x-1/2">Most Popular</Badge>
-                )}
-                <CardHeader className="text-center">
-                  <CardTitle className="text-xl">{plan.name}</CardTitle>
-                  <p className="text-muted-foreground mt-2 text-sm">{plan.description}</p>
-                  <div className="mt-4">
-                    <span className="text-3xl font-bold">{plan.price}</span>
-                    <span className="text-muted-foreground text-sm"> / {plan.period}</span>
-                  </div>
-                </CardHeader>
-                <CardContent className="flex flex-1 flex-col">
-                  <ul className="flex-1 space-y-3">
-                    {plan.features.map((feature) => (
-                      <li key={feature} className="flex items-start gap-2 text-sm">
-                        <Check className="text-primary mt-0.5 h-4 w-4 shrink-0" />
-                        {feature}
-                      </li>
-                    ))}
-                  </ul>
-                  <Link href="/contact" className="mt-8 block">
-                    <Button
-                      className="w-full gap-2"
-                      variant={plan.highlighted ? 'default' : 'outline'}
-                    >
-                      {plan.cta} <ArrowRight className="h-4 w-4" />
-                    </Button>
-                  </Link>
-                </CardContent>
-              </Card>
+              <StaggerItem key={plan.name}>
+                <Card
+                  className={`relative flex flex-col transition-all duration-200 hover:-translate-y-1 ${
+                    plan.highlighted
+                      ? 'border-primary shadow-primary/15 scale-[1.02] shadow-xl'
+                      : 'hover:border-primary/30 hover:shadow-lg'
+                  }`}
+                >
+                  {plan.highlighted && (
+                    <Badge className="absolute -top-3 left-1/2 -translate-x-1/2 shadow-sm">
+                      Most Popular
+                    </Badge>
+                  )}
+                  {plan.highlighted && (
+                    <div className="from-primary/5 pointer-events-none absolute inset-0 rounded-[inherit] bg-gradient-to-b to-transparent" />
+                  )}
+                  <CardHeader className="text-center">
+                    <CardTitle className="text-xl">{plan.name}</CardTitle>
+                    <p className="text-muted-foreground mt-2 text-sm">{plan.description}</p>
+                    <div className="mt-4">
+                      <span className="text-3xl font-bold">{plan.price}</span>
+                      <span className="text-muted-foreground text-sm"> / {plan.period}</span>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="flex flex-1 flex-col">
+                    <ul className="flex-1 space-y-3">
+                      {plan.features.map((feature) => (
+                        <li key={feature} className="flex items-start gap-2 text-sm">
+                          <Check className="text-primary mt-0.5 h-4 w-4 shrink-0" />
+                          {feature}
+                        </li>
+                      ))}
+                    </ul>
+                    <Link href="/contact" className="mt-8 block">
+                      <Button
+                        className="w-full gap-2"
+                        variant={plan.highlighted ? 'default' : 'outline'}
+                      >
+                        {plan.cta} <ArrowRight className="h-4 w-4" />
+                      </Button>
+                    </Link>
+                  </CardContent>
+                </Card>
+              </StaggerItem>
             ))}
-          </div>
+          </StaggerList>
         </div>
       </section>
     </>
