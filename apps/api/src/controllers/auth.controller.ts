@@ -22,10 +22,11 @@ function signRefresh(userId: string) {
 }
 
 function setRefreshCookie(res: Response, token: string) {
+  const isProd = process.env.NODE_ENV === 'production';
   res.cookie('refresh_token', token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'strict',
+    secure: isProd,
+    sameSite: isProd ? 'none' : 'lax',
     maxAge: REFRESH_TOKEN_TTL_MS,
     path: '/api/auth/refresh',
   });

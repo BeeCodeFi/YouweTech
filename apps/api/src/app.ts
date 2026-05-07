@@ -19,7 +19,13 @@ const app = express();
 app.use(helmet());
 
 // ── CORS ──────────────────────────────────────────────────────────────────────
-const allowedOrigins = (process.env.ALLOWED_ORIGINS ?? '').split(',').map((o) => o.trim());
+const allowedOrigins = [
+  ...(process.env.ALLOWED_ORIGINS ?? '')
+    .split(',')
+    .map((o) => o.trim())
+    .filter(Boolean),
+  'http://localhost:3000',
+];
 app.use(
   cors({
     origin: (origin, callback) => {
