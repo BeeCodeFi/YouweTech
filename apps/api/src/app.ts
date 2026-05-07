@@ -25,6 +25,7 @@ const allowedOrigins = [
     .map((o) => o.trim().replace(/\/$/, ''))
     .filter(Boolean),
   'http://localhost:3000',
+  'https://youwe-tech.vercel.app',
 ];
 app.use(
   cors({
