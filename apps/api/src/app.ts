@@ -22,14 +22,15 @@ app.use(helmet());
 const allowedOrigins = [
   ...(process.env.ALLOWED_ORIGINS ?? '')
     .split(',')
-    .map((o) => o.trim())
+    .map((o) => o.trim().replace(/\/$/, ''))
     .filter(Boolean),
   'http://localhost:3000',
 ];
 app.use(
   cors({
     origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin)) {
+      const normalised = origin?.replace(/\/$/, '');
+      if (!normalised || allowedOrigins.includes(normalised)) {
         callback(null, true);
       } else {
         callback(null, false);
